@@ -1,114 +1,67 @@
-const bootScreen = document.getElementById("bootScreen");
-const bootText = document.getElementById("bootText");
-const successScreen = document.getElementById("successScreen");
-const mainContent = document.getElementById("mainContent");
-const storyLog = document.getElementById("storyLog");
-const startButton = document.getElementById("startButton");
-const clickerGame = document.getElementById("clickerGame");
-const dataCountDisplay = document.getElementById("dataCount");
-const collectButton = document.getElementById("collectButton");
+// Load saved game or start new
+let gameData = JSON.parse(localStorage.getItem("uplinkProtocol")) || {
+  clicks: 0,
+  upgrades: { cursor: 1 }
+};
 
-const bootSequence = [
-  "RUNNING SYSTEM CHECK...",
-  "LOADING CORE MODULES...",
-  "VERIFYING DATA INTEGRITY...",
-  "ESTABLISHING SECURE CONNECTION...",
-  "BOOT COMPLETE."
+const clickCountEl = document.getElementById("clickCount");
+const clickerBtn = document.getElementById("clickerBtn");
+const shopEl = document.getElementById("shop");
+
+// Define upgrades
+const upgrades = [
+  { name: "Cursor Upgrade", key: "cursor", cost: 10, multiplier: 1 },
+  { name: "Packet Amplifier", key: "amplifier", cost: 50, multiplier: 5 }
 ];
 
-let dataFragments = 0;
-let storyStage = 0;
-
-function simulateBoot(skipDelay = false) {
-  let i = 0;
-  bootText.innerHTML = "<p>INITIALIZING SYSTEM...</p>";
-  const interval = setInterval(() => {
-    if (i < bootSequence.length) {
-      bootText.innerHTML += `<p>${bootSequence[i]}</p>`;
-      i++;
-    } else {
-      clearInterval(interval);
-      setTimeout(() => {
-        bootScreen.classList.add("fade-out");
-        setTimeout(() => {
-          bootScreen.style.display = "none";
-          mainContent.style.display = "flex";
-          if (localStorage.getItem("initialized")) {
-            startButton.style.display = "none";
-            clickerGame.style.display = "flex";
-            storyLog.textContent = "[System online. Continue data collection.]";
-            loadProgress();
-          }
-        }, 1000);
-      }, skipDelay ? 0 : 500);
-    }
-  }, skipDelay ? 0 : 1000);
+// Render shop
+function renderShop() {
+  shopEl.innerHTML = "";
+  upgrades.forEach(upg => {
+    const div = document.createElement("div");
+    div.className = "shop-item";
+    div.innerHTML = `
+      <span>${upg.name} (Cost: ${upg.cost})</span>
+      <button ${gameData.clicks < upg.cost ? "disabled" : ""}>Buy</button>
+    `;
+    div.querySelector("button").addEventListener("click", () => buyUpgrade(upg));
+    shopEl.appendChild(div);
+  });
 }
 
-function activateSystem() {
-  startButton.style.display = "none";
-  storyLog.innerText = "System restarting...";
-  mainContent.style.display = "none";
-  document.body.style.background = "black";
-
-  setTimeout(() => {
-    successScreen.style.display = "flex";
-    successScreen.classList.add("fade-in");
-    successScreen.style.opacity = "1";
-  }, 2000);
-
-  setTimeout(() => {
-    successScreen.classList.remove("fade-in");
-    successScreen.classList.add("fade-out");
-  }, 3500);
-
-  setTimeout(() => {
-    successScreen.style.display = "none";
-    mainContent.style.display = "flex";
-    clickerGame.style.display = "flex";
-    storyLog.textContent = "[System online. Begin data collection.]";
-    localStorage.setItem("initialized", "true");
-  }, 5000);
-}
-
-// Clicker system
-function collectData() {
-  dataFragments++;
-  dataCountDisplay.textContent = dataFragments;
-  localStorage.setItem("dataFragments", dataFragments);
-
-  // Story progression thresholds
-  const stages = [
-    { count: 5, text: "[Signal detected. Connection stabilizing...]" },
-    { count: 15, text: "[Unknown subroutine awakening. Proceed with caution.]" },
-    { count: 30, text: "[Fragmented memory recovered: 'Who... are you?']" },
-    { count: 50, text: "[System anomaly detected. Recompiling consciousness...]" },
-    { count: 75, text: "[Entity online. Awaiting directives.]" }
-  ];
-
-  const nextStage = stages[storyStage];
-  if (nextStage && dataFragments >= nextStage.count) {
-    storyLog.textContent = nextStage.text;
-    storyStage++;
-    localStorage.setItem("storyStage", storyStage);
+// Handle upgrade purchase
+function buyUpgrade(upg) {
+  if (gameData.clicks >= upg.cost) {
+    gameData.clicks -= upg.cost;
+    gameData.upgrades[upg.key] = (gameData.upgrades[upg.key] || 0) + 1;
+    upg.cost = Math.floor(upg.cost * 1.5);
+    updateDisplay();
+    renderShop();
+    saveGame();
   }
 }
 
-function loadProgress() {
-  const savedFragments = localStorage.getItem("dataFragments");
-  const savedStage = localStorage.getItem("storyStage");
-
-  if (savedFragments) {
-    dataFragments = parseInt(savedFragments);
-    dataCountDisplay.textContent = dataFragments;
-  }
-  if (savedStage) storyStage = parseInt(savedStage);
+// Update clicks display
+function updateDisplay() {
+  clickCountEl.textContent = gameData.clicks;
 }
 
-// Event listeners
-startButton.addEventListener("click", activateSystem);
-collectButton.addEventListener("click", collectData);
+// Clicker button logic
+clickerBtn.addEventListener("click", () => {
+  let multiplier = 0;
+  for (const upg in gameData.upgrades) {
+    multiplier += gameData.upgrades[upg];
+  }
+  gameData.clicks += multiplier;
+  updateDisplay();
+  saveGame();
+});
 
-// Boot
-simulateBoot(localStorage.getItem("initialized"));
-loadProgress();
+// Save game
+function saveGame() {
+  localStorage.setItem("uplinkProtocol", JSON.stringify(gameData));
+}
+
+// Initial render
+updateDisplay();
+renderShop();
