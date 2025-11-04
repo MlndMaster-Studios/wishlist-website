@@ -7,23 +7,39 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="day-clock-wrapper">
-    <div class="day-clock-card">
-      <h2>Uplink Protocol</h2>
-      <p>Clicks: <span id="clickCount">0</span></p>
-    </div>
-  </div>
-
-  <div class="schedule-row">
-    <div class="schedule-card">
-      <h3>Main Terminal</h3>
-      <p>Click the button to gain data packets.</p>
-      <button id="clickerBtn">Send Packet</button>
+  <div class="container">
+    <h1>Uplink Protocol</h1>
+    <div class="clicker-section">
+      <div id="clicker-card" class="card">
+        <h2>Data Points: <span id="dp-count">0</span></h2>
+        <button id="click-btn">Hack!</button>
+      </div>
     </div>
 
-    <div class="schedule-card">
-      <h3>Upgrade Shop</h3>
-      <div id="shop"></div>
+    <div class="shop-section">
+      <div class="shop-card card">
+        <h3>Click Upgrades</h3>
+        <div class="shop-item">
+          <span>Data Booster (+1 DP per click)</span>
+          <button data-cost="10" data-type="click" data-value="1">Buy</button>
+        </div>
+        <div class="shop-item">
+          <span>Overclock (+5 DP per click)</span>
+          <button data-cost="50" data-type="click" data-value="5">Buy</button>
+        </div>
+      </div>
+
+      <div class="shop-card card">
+        <h3>UI Upgrades</h3>
+        <div class="shop-item">
+          <span>Neon Gradient Background</span>
+          <button data-cost="100" data-type="ui" data-value="gradient">Buy</button>
+        </div>
+        <div class="shop-item">
+          <span>Glowing Buttons</span>
+          <button data-cost="150" data-type="ui" data-value="glow">Buy</button>
+        </div>
+      </div>
     </div>
   </div>
 
