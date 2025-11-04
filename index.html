@@ -7,16 +7,28 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Boot Screen -->
   <div class="boot-screen" id="bootScreen">
     <div class="boot-text" id="bootText">
       <p>INITIALIZING SYSTEM...</p>
     </div>
   </div>
 
+  <!-- Success Transition -->
+  <div class="success-screen" id="successScreen">
+    <h1>SYSTEM RESTART SUCCESSFUL</h1>
+  </div>
+
+  <!-- Main Clicker Interface -->
   <div class="main" id="mainContent">
     <h1>Uplink Protocol</h1>
     <p id="storyLog">[System offline.]</p>
     <button id="startButton">Start System</button>
+
+    <div id="clickerGame" class="clicker">
+      <p>Data Fragments: <span id="dataCount">0</span></p>
+      <button id="collectButton">Collect Data</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
