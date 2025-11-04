@@ -1,8 +1,12 @@
 const bootScreen = document.getElementById("bootScreen");
 const bootText = document.getElementById("bootText");
+const successScreen = document.getElementById("successScreen");
 const mainContent = document.getElementById("mainContent");
 const storyLog = document.getElementById("storyLog");
 const startButton = document.getElementById("startButton");
+const clickerGame = document.getElementById("clickerGame");
+const dataCountDisplay = document.getElementById("dataCount");
+const collectButton = document.getElementById("collectButton");
 
 const bootSequence = [
   "RUNNING SYSTEM CHECK...",
@@ -12,8 +16,12 @@ const bootSequence = [
   "BOOT COMPLETE."
 ];
 
-function simulateBoot() {
+let dataFragments = 0;
+let storyStage = 0;
+
+function simulateBoot(skipDelay = false) {
   let i = 0;
+  bootText.innerHTML = "<p>INITIALIZING SYSTEM...</p>";
   const interval = setInterval(() => {
     if (i < bootSequence.length) {
       bootText.innerHTML += `<p>${bootSequence[i]}</p>`;
@@ -25,27 +33,82 @@ function simulateBoot() {
         setTimeout(() => {
           bootScreen.style.display = "none";
           mainContent.style.display = "flex";
+          if (localStorage.getItem("initialized")) {
+            startButton.style.display = "none";
+            clickerGame.style.display = "flex";
+            storyLog.textContent = "[System online. Continue data collection.]";
+            loadProgress();
+          }
         }, 1000);
-      }, 500);
+      }, skipDelay ? 0 : 500);
     }
-  }, 1000);
+  }, skipDelay ? 0 : 1000);
 }
 
 function activateSystem() {
   startButton.style.display = "none";
   storyLog.innerText = "System restarting...";
-  document.body.style.background = "black";
   mainContent.style.display = "none";
+  document.body.style.background = "black";
 
   setTimeout(() => {
-    bootText.innerHTML = "<p>REBOOTING...</p>";
-    bootScreen.style.display = "flex";
-    bootScreen.classList.remove("fade-out");
-    simulateBoot();
-  }, 3000);
+    successScreen.style.display = "flex";
+    successScreen.classList.add("fade-in");
+    successScreen.style.opacity = "1";
+  }, 2000);
+
+  setTimeout(() => {
+    successScreen.classList.remove("fade-in");
+    successScreen.classList.add("fade-out");
+  }, 3500);
+
+  setTimeout(() => {
+    successScreen.style.display = "none";
+    mainContent.style.display = "flex";
+    clickerGame.style.display = "flex";
+    storyLog.textContent = "[System online. Begin data collection.]";
+    localStorage.setItem("initialized", "true");
+  }, 5000);
 }
 
-startButton.addEventListener("click", activateSystem);
+// Clicker system
+function collectData() {
+  dataFragments++;
+  dataCountDisplay.textContent = dataFragments;
+  localStorage.setItem("dataFragments", dataFragments);
 
-// Run the first boot on page load
-simulateBoot();
+  // Story progression thresholds
+  const stages = [
+    { count: 5, text: "[Signal detected. Connection stabilizing...]" },
+    { count: 15, text: "[Unknown subroutine awakening. Proceed with caution.]" },
+    { count: 30, text: "[Fragmented memory recovered: 'Who... are you?']" },
+    { count: 50, text: "[System anomaly detected. Recompiling consciousness...]" },
+    { count: 75, text: "[Entity online. Awaiting directives.]" }
+  ];
+
+  const nextStage = stages[storyStage];
+  if (nextStage && dataFragments >= nextStage.count) {
+    storyLog.textContent = nextStage.text;
+    storyStage++;
+    localStorage.setItem("storyStage", storyStage);
+  }
+}
+
+function loadProgress() {
+  const savedFragments = localStorage.getItem("dataFragments");
+  const savedStage = localStorage.getItem("storyStage");
+
+  if (savedFragments) {
+    dataFragments = parseInt(savedFragments);
+    dataCountDisplay.textContent = dataFragments;
+  }
+  if (savedStage) storyStage = parseInt(savedStage);
+}
+
+// Event listeners
+startButton.addEventListener("click", activateSystem);
+collectButton.addEventListener("click", collectData);
+
+// Boot
+simulateBoot(localStorage.getItem("initialized"));
+loadProgress();
