@@ -1,57 +1,51 @@
-// === ??? SYSTEM BOOT SEQUENCE ===
-const output = document.getElementById("output");
-const btn = document.getElementById("main-btn");
-const log = document.getElementById("log");
-const status = document.getElementById("status");
+const bootScreen = document.getElementById("bootScreen");
+const bootText = document.getElementById("bootText");
+const mainContent = document.getElementById("mainContent");
+const storyLog = document.getElementById("storyLog");
+const startButton = document.getElementById("startButton");
 
-let active = false;
-let lines = [
-  "…establishing uplink…",
-  "…verifying memory integrity…",
-  "…signal found.",
-  "…analyzing tone patterns…",
-  "…ready.",
+const bootSequence = [
+  "RUNNING SYSTEM CHECK...",
+  "LOADING CORE MODULES...",
+  "VERIFYING DATA INTEGRITY...",
+  "ESTABLISHING SECURE CONNECTION...",
+  "BOOT COMPLETE."
 ];
 
-function typeText(el, text, speed = 45) {
-  return new Promise(resolve => {
-    el.textContent = "";
-    let i = 0;
-    let typer = setInterval(() => {
-      el.textContent += text.charAt(i);
+function simulateBoot() {
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < bootSequence.length) {
+      bootText.innerHTML += `<p>${bootSequence[i]}</p>`;
       i++;
-      if (i >= text.length) {
-        clearInterval(typer);
-        resolve();
-      }
-    }, speed);
-  });
+    } else {
+      clearInterval(interval);
+      setTimeout(() => {
+        bootScreen.classList.add("fade-out");
+        setTimeout(() => {
+          bootScreen.style.display = "none";
+          mainContent.style.display = "flex";
+        }, 1000);
+      }, 500);
+    }
+  }, 1000);
 }
 
-btn.addEventListener("click", async () => {
-  if (active) return;
-  active = true;
-  btn.disabled = true;
-  btn.textContent = "Running...";
-  status.textContent = "Processing";
+function activateSystem() {
+  startButton.style.display = "none";
+  storyLog.innerText = "System restarting...";
+  document.body.style.background = "black";
+  mainContent.style.display = "none";
 
-  for (let line of lines) {
-    await typeText(output, line);
-    await new Promise(r => setTimeout(r, 600));
-  }
+  setTimeout(() => {
+    bootText.innerHTML = "<p>REBOOTING...</p>";
+    bootScreen.style.display = "flex";
+    bootScreen.classList.remove("fade-out");
+    simulateBoot();
+  }, 3000);
+}
 
-  await typeText(output, "complete.");
-  log.textContent = "Activity detected.";
-  status.textContent = "Online";
-  btn.textContent = "Reactivate?";
-  btn.disabled = false;
-  active = false;
-});
+startButton.addEventListener("click", activateSystem);
 
-// === Subtle mouse parallax ===
-document.addEventListener("mousemove", e => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 10;
-  const y = (e.clientY / window.innerHeight - 0.5) * 10;
-  document.body.style.transform = `translate(${x}px, ${y}px)`;
-  document.body.style.transition = "transform 0.1s ease-out";
-});
+// Run the first boot on page load
+simulateBoot();
