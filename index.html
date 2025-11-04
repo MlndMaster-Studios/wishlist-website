@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mysterious Minimal — do not ask</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* small safe reset for fonts used in this page */
+    :root { --page-padding: 28px; }
+    html,body{font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;}
+  </style>
+</head>
+<body>
+  <main style="padding: var(--page-padding); max-width:1100px; margin: 0 auto;">
+    <!-- Top: Title + Day Clock -->
+    <header style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;">
+      <h1 style="margin:0;font-size:1.5rem">Mysterious Minimal <span>— don't ask</span></h1>
+
+      <div class="day-clock-wrapper" style="margin:0;">
+        <div class="day-clock-card" id="dayClockCard" aria-live="polite">
+          <h2 id="dayClockDisplay">DAY: 1</h2>
+          <p id="dateLine">Letter day clock • auto-updating</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Controls: dropdown + progress -->
+    <section style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1.25rem;">
+      <div style="position:relative;">
+        <button id="dayDropdownBtn">Choose Mode ▼</button>
+        <div id="dayDropdown" style="display:none; position:absolute; right:0; margin-top:8px;">
+          <div class="dropdown-item" data-mode="1" style="padding:10px 14px; cursor:pointer;">Mode Alpha</div>
+          <div class="dropdown-item" data-mode="2" style="padding:10px 14px; cursor:pointer;">Mode Beta</div>
+          <div class="dropdown-item" data-mode="3" style="padding:10px 14px; cursor:pointer;">Mode Gamma</div>
+        </div>
+      </div>
+
+      <div id="progress-section" style="flex:1; min-width:200px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <strong style="font-size:0.95rem">Mystery Progress</strong>
+          <small style="opacity:0.8">— how close we are to doing a thing</small>
+        </div>
+        <div id="progress-bar-container" style="height:18px;">
+          <div id="progress-bar" style="width: 32%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule / Cards -->
+    <section id="schedule" class="schedule-day" aria-label="schedule">
+      <div class="schedule-row">
+        <article class="schedule-card" data-card="1">
+          <h3>Card Alpha</h3>
+          <p>A compact widget that does stuff you didn't ask about.</p>
+          <div style="margin-top:auto;display:flex;gap:.5rem;align-items:center;">
+            <button class="tiny" data-action="bump">Bump</button>
+            <small style="opacity:.8">ETA 12 min</small>
+          </div>
+        </article>
+
+        <article class="schedule-card" data-card="2">
+          <h3>Card Beta</h3>
+          <p>Notifications, maybe. Or not. It's ambiguous.</p>
+          <div style="margin-top:auto;display:flex;gap:.5rem;align-items:center;">
+            <button class="tiny" data-action="bump">Bump</button>
+            <small style="opacity:.8">ETA 4 hr</small>
+          </div>
+        </article>
+
+        <article class="widget-card" data-card="3">
+          <h3>Widget Gamma</h3>
+          <p>Small utility. Hover it and move your mouse for a subtle parallax.</p>
+        </article>
+      </div>
+
+      <div class="schedule-row">
+        <article class="schedule-card" data-card="4">
+          <h3>Card Delta</h3>
+          <p>Placeholder text that sounds confident.</p>
+        </article>
+
+        <article class="schedule-card" data-card="5">
+          <h3>Card Epsilon</h3>
+          <p>Yes, another card. Yes, it exists.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Footer small controls -->
+    <footer style="display:flex;justify-content:space-between;align-items:center;margin-top:2rem;gap:1rem;flex-wrap:wrap;">
+      <div>
+        <small style="opacity:.85">Built quickly. Functionality withheld.</small>
+      </div>
+
+      <div style="display:flex;gap:.5rem;align-items:center;">
+        <button id="randomizeBtn" class="tiny">Shuffle Progress</button>
+        <button id="flipDayBtn" class="tiny">Flip Day</button>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
