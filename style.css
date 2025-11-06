@@ -125,3 +125,21 @@ h1 span{ background: linear-gradient(90deg,var(--accent1),var(--accent2)); -webk
   transform: translateY(-2px);
   background: linear-gradient(90deg, var(--accent2), var(--accent1));
 }
+
+.header-actions select {
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--accent1), var(--accent2));
+  color: white;
+  border: 0;
+  font-weight: 600;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+.header-actions select option {
+  background-color: var(--bg2);
+  color: var(--muted);
+}
