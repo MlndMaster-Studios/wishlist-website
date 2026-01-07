@@ -1,8 +1,3 @@
-/* ================================
-   Neon Frost Theme (Wishlist Site)
-   Adapted from Liam’s classic schedule design
-   ================================ */
-
 :root {
   --bg1: #100018;
   --bg2: #1e0030;
@@ -16,19 +11,16 @@
   --max-width: 1100px;
 }
 
-/* ===== Body & Background ===== */
 body {
   margin: 0;
-  padding: 0;
+  padding: 2rem 1rem;
   min-height: 100vh;
   background: linear-gradient(-45deg, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
   background-size: 400% 400%;
   animation: gradientFlow 20s ease infinite;
   color: var(--muted);
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  font-family: "Inter", system-ui, Arial;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 @keyframes gradientFlow {
@@ -37,421 +29,76 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* ===== Header ===== */
-.site-header {
-  max-width: var(--max-width);
-  margin: 28px auto 12px;
-  padding: 18px;
-  border-radius: var(--radius);
-  background: rgba(30, 41, 59, 0.55);
-  backdrop-filter: blur(14px) saturate(160%);
-  border: 1px solid var(--card-border);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  animation: fadeInUp 0.8s ease forwards;
-}
-
-.header-inner {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-h1 {
-  font-size: 1.6rem;
-  margin: 0;
-  font-weight: 800;
-  color: #e8e8ff;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  letter-spacing: 0.3px;
-}
-
-h1 span {
-  background: linear-gradient(270deg, var(--accent1), var(--accent2), #0f172a);
-  background-size: 600% 600%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: textGradient 8s ease infinite;
-}
-
-@keyframes textGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* ===== Search & Buttons ===== */
-.header-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.header-actions input#search {
-  padding: 10px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--muted);
-  min-width: 180px;
-  backdrop-filter: blur(8px);
-}
-
-.header-actions select {
-  padding: 9px 10px;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--accent1), var(--accent2));
-  color: white;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  animation: buttonGradient 8s ease infinite;
-  background-size: 400% 400%;
-}
-
-@keyframes buttonGradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-.header-actions button {
-  padding: 9px 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--muted);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.header-actions button:hover {
-  border-color: rgba(139, 92, 246, 0.3);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.25);
-}
-
-/* ===== Subheader ===== */
-.subtitle {
-  margin: 8px 0 0;
-  color: #cfcaf6;
-  font-size: 0.95rem;
-  opacity: 0.95;
-}
-
-/* ===== Layout ===== */
 .container {
   max-width: var(--max-width);
-  margin: 18px auto;
-  padding: 6px 16px 60px;
+  margin: auto;
 }
 
-/* ===== Group Cards ===== */
+.wishlist-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
 .group {
   background: var(--card-bg);
+  padding: 24px;
   border-radius: var(--radius);
-  padding: 16px;
   border: 1px solid var(--card-border);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(14px) saturate(160%);
-  animation: fadeInUp 0.6s ease forwards;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(14px);
 }
 
-.group:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 18px rgba(139, 92, 246, 0.25);
-  border-color: rgba(139, 92, 246, 0.3);
-}
-
-.group h2 {
-  margin: 0 0 10px 0;
-  font-size: 1.1rem;
-  color: #fff;
-  background: linear-gradient(90deg, #a78bfa, #4f46e5, #60a5fa);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: textShift 6s ease infinite;
-}
-
-@keyframes textShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* ===== Wishlist Items ===== */
 .items {
   display: grid;
-  gap: 12px;
+  gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
 .wish {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 14px;
+  padding: 18px;
   border-radius: 14px;
   background: rgba(30, 41, 59, 0.55);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(139, 92, 246, 0.2);
   cursor: pointer;
-  transition: all 0.25s ease;
-  overflow: hidden;
+  transition: 0.25s ease;
+  user-select: none;
 }
 
 .wish:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2), 0 12px 24px rgba(0, 0, 0, 0.15);
-  border-color: rgba(139, 92, 246, 0.25);
+  transform: translateY(-4px);
 }
 
-.wish .wish-main h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: #e0d7ff;
-  text-shadow: 0 0 4px rgba(139, 92, 246, 0.1);
-  transition: text-shadow 0.3s ease;
-}
-
-.wish:hover .wish-main h3 {
-  text-shadow: 0 0 6px rgba(139, 92, 246, 0.25);
-}
-
-.wish .wish-main .meta {
-  margin-top: 4px;
-  font-size: 0.82rem;
-  color: #c3c1ff;
-  opacity: 0.9;
-}
-
-.wish .wish-actions {
-  text-align: right;
-  min-width: 80px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-
-.wish .stars {
-  font-weight: 700;
-  font-size: 0.95rem;
-  background: linear-gradient(90deg, var(--accent1), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* ===== Purchased State ===== */
 .wish.purchased {
   opacity: 0.55;
-  filter: grayscale(0.1);
-  position: relative;
 }
 
-.wish.purchased::after {
-  content: "PURCHASED";
-  position: absolute;
-  right: 12px;
-  top: 10px;
-  background: rgba(0, 0, 0, 0.45);
-  color: #bcd9ff;
-  font-size: 0.7rem;
-  padding: 4px 8px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* ===== Buttons ===== */
-.bulk button {
-  padding: 9px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(90deg, var(--accent1), var(--accent2));
-  color: #fff;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
-}
-
-.bulk button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(139, 92, 246, 0.3);
-}
-
-/* ===== Purchased Button ===== */
 .mark-purchased {
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255,255,255,0.2);
   color: var(--muted);
   border-radius: 6px;
   padding: 4px 7px;
-  font-size: 0.8rem;
   cursor: pointer;
-  transition: all 0.25s ease;
 }
 
-.mark-purchased:hover {
-  background: var(--accent1);
-  color: white;
-  border-color: var(--accent1);
-}
-
-/* ===== Scrollbar ===== */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, var(--accent1), var(--accent2));
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0f172a;
-}
-
-/* ===== Footer ===== */
 .footer-note {
+  margin-top: 60px;
   text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: #c9c9ff;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px) saturate(160%);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
-  letter-spacing: 0.4px;
+  opacity: 0.8;
 }
 
-.footer-note strong {
-  color: #9d7eff;
-  font-weight: 600;
-}
-
-/* ===== Animations ===== */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Responsive ===== */
-@media (max-width: 480px) {
-  h1 { font-size: 1.25rem; }
-  .header-actions input#search { min-width: 120px; }
-  .items { grid-template-columns: 1fr; }
-  .wish .wish-actions { min-width: 64px; }
-}
-
-/* ===== Home Button ===== */
 .home-btn {
   position: fixed;
   top: 1.2rem;
   left: 1.2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: rgba(30, 41, 59, 0.55);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(30,41,59,.55);
   color: #cfcaff;
-  backdrop-filter: blur(10px) saturate(160%);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 999;
-  text-decoration: none;
-}
-
-.home-btn svg {
-  width: 22px;
-  height: 22px;
-}
-
-.home-btn:hover {
-  color: #fff;
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.25), 0 0 8px rgba(139, 92, 246, 0.3);
-  transform: translateY(-3px);
-}
-
-.home-btn:active {
-  transform: scale(0.96);
-}
-
-/* =========================
-   SPACING & LAYOUT IMPROVEMENTS
-   ========================= */
-
-/* General breathing room */
-body {
-  padding: 2rem 1rem;
-}
-
-/* Header spacing */
-.site-header {
-  margin: 48px auto 24px;
-  padding: 28px;
-}
-
-.header-inner {
-  gap: 28px;
-}
-
-/* Subtitle breathing space */
-.subtitle {
-  margin-top: 16px;
-  margin-bottom: 0;
-  line-height: 1.5;
-}
-
-/* Container padding & vertical rhythm */
-.container {
-  padding: 0 24px 100px;
-  margin-top: 32px;
-}
-
-/* Section controls */
-.list-controls {
-  margin-bottom: 28px;
-  gap: 20px;
-}
-
-/* Grid gap */
-.wishlist-grid {
-  gap: 36px;
-}
-
-/* Group blocks */
-.group {
-  padding: 24px;
-  margin-bottom: 36px;
-}
-
-/* Items inside each group */
-.items {
-  gap: 20px;
-}
-
-/* Individual wishlist items */
-.wish {
-  padding: 18px 20px;
-  gap: 20px;
-}
-
-/* Footer breathing room */
-.footer-note {
-  margin-top: 60px;
-  padding: 24px;
 }
