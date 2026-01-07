@@ -1,31 +1,16 @@
 (() => {
-  const wishlist = document.getElementById('wishlist');
   const items = Array.from(document.querySelectorAll('.wish'));
-
-  // Inject "mark purchased" button if missing
-  items.forEach(el => {
-    if (!el.querySelector('.mark-purchased')) {
-      const btn = document.createElement('button');
-      btn.className = 'mark-purchased';
-      btn.textContent = '✓';
-      el.querySelector('.wish-actions').appendChild(btn);
-    }
-  });
 
   const searchInput = document.getElementById('search');
   const filterStars = document.getElementById('filterStars');
   const toggleVIP = document.getElementById('toggleVIP');
   const vipGroup = document.getElementById('vipGroup');
-  const copyLinksBtn = document.getElementById('copyLinks');
-  const clearPurchasedBtn = document.getElementById('clearPurchased');
 
-  const STORAGE_KEY = 'liam_wishlist_purchased_v1';
+  const STORAGE_KEY = 'liam_wishlist_purchased_v2';
 
-  // Load purchased set from localStorage
   function loadPurchased() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : {};
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
     } catch {
       return {};
     }
@@ -37,145 +22,67 @@
 
   let purchasedMap = loadPurchased();
 
-  // Apply purchased marks visually
-  function refreshPurchasedMarks() {
+  function getItemId(el) {
+    return el.dataset.id;
+  }
+
+  function refreshPurchased() {
     items.forEach(el => {
       const id = getItemId(el);
-      if (purchasedMap[id]) {
-        el.classList.add('purchased');
-        el.setAttribute('data-purchased', 'true');
-      } else {
-        el.classList.remove('purchased');
-        el.removeAttribute('data-purchased');
-      }
+      el.classList.toggle('purchased', !!purchasedMap[id]);
     });
   }
 
-  function getItemId(el) {
-    const title = el.querySelector('h3')?.innerText.trim() || 'item';
-    const cat = el.dataset.category || 'misc';
-    return `${cat}::${title}`;
-  }
-
-  // --- Click handlers ---
   items.forEach(el => {
-    const markBtn = el.querySelector('.mark-purchased');
-    if (markBtn) {
-      markBtn.addEventListener('click', ev => {
-        ev.stopPropagation();
-        const id = getItemId(el);
-        purchasedMap[id] = !purchasedMap[id];
-        savePurchased(purchasedMap);
-        refreshPurchasedMarks();
-      });
-    }
+    const btn = document.createElement('button');
+    btn.className = 'mark-purchased';
+    btn.textContent = '✓';
+    el.querySelector('.wish-actions').appendChild(btn);
 
-    // Normal click opens link
-    el.addEventListener('click', ev => {
-      if (ev.target.closest('.mark-purchased')) return;
-      const link = el.dataset.link;
-      if (link && link !== '#') {
-        window.open(link, '_blank', 'noopener');
-      }
-    });
-
-    // Double-click toggles purchased
-    el.addEventListener('dblclick', ev => {
-      ev.stopPropagation();
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
       const id = getItemId(el);
       purchasedMap[id] = !purchasedMap[id];
       savePurchased(purchasedMap);
-      refreshPurchasedMarks();
+      refreshPurchased();
+    });
+
+    el.addEventListener('dblclick', () => {
+      const id = getItemId(el);
+      purchasedMap[id] = !purchasedMap[id];
+      savePurchased(purchasedMap);
+      refreshPurchased();
+    });
+
+    el.addEventListener('click', e => {
+      if (e.target.closest('.mark-purchased')) return;
+      const link = el.dataset.link;
+      if (link && link !== '#') window.open(link, '_blank', 'noopener');
     });
   });
 
-  // --- Filtering logic (stars + search) ---
   function applyFilters() {
-    const starFilter = filterStars.value;
-    const query = (searchInput.value || '').toLowerCase().trim();
+    const query = searchInput.value.toLowerCase();
+    const minStars = filterStars.value === 'all' ? 0 : Number(filterStars.value);
 
     items.forEach(el => {
-      const stars = parseInt(el.dataset.stars || '1', 10);
-      const title = el.querySelector('h3')?.innerText.toLowerCase() || '';
-      const meta = el.querySelector('.meta')?.innerText.toLowerCase() || '';
-
-      const matchesStars =
-        starFilter === 'all' ? true : stars === parseInt(starFilter, 10);
-      const matchesQuery =
-        !query || title.includes(query) || meta.includes(query);
-
-      el.style.display = matchesStars && matchesQuery ? '' : 'none';
+      const stars = Number(el.dataset.stars);
+      const text = el.innerText.toLowerCase();
+      el.style.display =
+        stars >= minStars && text.includes(query) ? '' : 'none';
     });
   }
 
-  // --- Copy visible links ---
-  async function copyVisibleLinks() {
-    const visible = items.filter(i => i.style.display !== 'none');
-    if (!visible.length) {
-      alert('No visible items to copy.');
-      return;
-    }
-    const lines = visible
-      .map(el => {
-        const title = el.querySelector('h3')?.innerText.trim() || 'Item';
-        const link =
-          el.dataset.link && el.dataset.link !== '#'
-            ? el.dataset.link
-            : '[no link]';
-        return `${title} — ${link}`;
-      })
-      .join('\n');
-
-    try {
-      await navigator.clipboard.writeText(lines);
-      copyLinksBtn.textContent = 'Copied!';
-      setTimeout(() => (copyLinksBtn.textContent = 'Copy visible links'), 1300);
-    } catch {
-      prompt('Copy these links manually:', lines);
-    }
-  }
-
-  // --- Toggle VIP group ---
-  function toggleVipGroup() {
+  function toggleVip() {
     const hidden = vipGroup.hasAttribute('hidden');
-    if (hidden) {
-      vipGroup.removeAttribute('hidden');
-      toggleVIP.textContent = 'Hide VIP list';
-    } else {
-      vipGroup.setAttribute('hidden', '');
-      toggleVIP.textContent = 'Show VIP list';
-    }
+    vipGroup.toggleAttribute('hidden');
+    toggleVIP.textContent = hidden ? 'Hide VIP list' : 'Show VIP list';
   }
 
-  // --- Clear purchased marks ---
-  function clearPurchased() {
-    purchasedMap = {};
-    savePurchased(purchasedMap);
-    refreshPurchasedMarks();
-  }
-
-  // --- Wire up UI ---
   searchInput.addEventListener('input', applyFilters);
   filterStars.addEventListener('change', applyFilters);
-  toggleVIP.addEventListener('click', toggleVipGroup);
-  copyLinksBtn.addEventListener('click', copyVisibleLinks);
-  clearPurchasedBtn.addEventListener('click', () => {
-    if (confirm('Clear all purchased marks?')) clearPurchased();
-  });
+  toggleVIP.addEventListener('click', toggleVip);
 
-  // --- Keyboard shortcuts ---
-  document.addEventListener('keydown', e => {
-    if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      toggleVipGroup();
-    }
-    if (e.key === 'f' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      searchInput.focus();
-    }
-  });
-
-  // --- Initial run ---
-  refreshPurchasedMarks();
+  refreshPurchased();
   applyFilters();
 })();
