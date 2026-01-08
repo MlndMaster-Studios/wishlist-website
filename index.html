@@ -1,126 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Liam's Wishlist Website</title>
-  <link rel="icon" href="tab-icon.png" type="image/png">
+  <meta charset="UTF-8" />
+  <title>Wishlist</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<a href="https://mlndmaster-studios.github.io/homepage/" class="home-btn" aria-label="Go to homepage">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 3l9 8h-3v10h-4V14H10v7H6V11H3z"/>
-  </svg>
-</a>
+<header class="top-bar">
+  <input id="search" type="text" placeholder="Search…" />
 
-<header class="site-header">
-  <div class="header-inner">
-    <h1><span>Liam’s</span> Wishlist Website</h1>
-    <div class="header-actions">
-      <input id="search" placeholder="Search wishlist..." />
-      <select id="filterStars">
-        <option value="all">All priorities</option>
-        <option value="1">★ 1+</option>
-        <option value="2">★ 2+</option>
-        <option value="3">★ 3+</option>
-        <option value="4">★ 4+</option>
-      </select>
-      <button id="toggleVIP">Show VIP list</button>
-    </div>
-  </div>
-  <p class="subtitle">Click an item to open its product page. Double-click or ✓ to mark purchased.</p>
+  <select id="filterStars">
+    <option value="all">All priorities</option>
+    <option value="1">★</option>
+    <option value="2">★★</option>
+    <option value="3">★★★</option>
+  </select>
+
+  <button id="copyLinks">Copy visible links</button>
+  <button id="clearPurchased">Clear purchased marks</button>
 </header>
 
-<main class="container">
-<section class="wishlist-grid" id="wishlist">
+<section id="wishlist">
 
-<!-- ================= GAMES ================= -->
-<div class="group">
-  <h2>PlayStation Games & Gift Cards</h2>
-  <div class="items">
-
-    <article class="wish" data-id="ittakes2" data-link="#" data-stars="1" data-category="games">
-      <div class="wish-main"><h3>It Takes Two</h3><p class="meta">$39.99 • Game</p></div>
-      <div class="wish-actions"><div class="stars">★</div></div>
-    </article>
-
-    <article class="wish" data-id="stray" data-link="#" data-stars="1" data-category="games">
-      <div class="wish-main"><h3>Stray</h3><p class="meta">$19.99 • Game</p></div>
-      <div class="wish-actions"><div class="stars">★</div></div>
-    </article>
-
-    <article class="wish" data-id="deathstranding" data-link="#" data-stars="2" data-category="games">
-      <div class="wish-main"><h3>Death Stranding</h3><p class="meta">$49.99 • Game</p></div>
-      <div class="wish-actions"><div class="stars">★★</div></div>
-    </article>
-
-    <article class="wish" data-id="re4" data-link="#" data-stars="2" data-category="games">
-      <div class="wish-main"><h3>Resident Evil 4</h3><p class="meta">$39.99 • Game</p></div>
-      <div class="wish-actions"><div class="stars">★★</div></div>
-    </article>
-
-    <article class="wish" data-id="re3" data-link="#" data-stars="2" data-category="games">
-      <div class="wish-main"><h3>Resident Evil 3</h3><p class="meta">$39.99 • Game</p></div>
-      <div class="wish-actions"><div class="stars">★★</div></div>
-    </article>
-
+  <!-- Example item -->
+  <div class="wish" data-stars="3" data-link="https://www.amazon.com">
+    <h3>Example Product</h3>
+    <p class="meta">Amazon</p>
+    <div class="wish-actions">
+      <button class="mark-purchased">✓</button>
+    </div>
   </div>
-</div>
 
-<!-- ================= LEGO ================= -->
-<div class="group">
-  <h2>LEGO Sets</h2>
-  <div class="items">
-    <article class="wish" data-id="helicarrier" data-link="https://www.lego.com/en-us/product/the-avengers-helicarrier-76295?age-gate=grown_up" data-stars="2" data-category="lego">
-      <div class="wish-main"><h3>Avengers Helicarrier</h3><p class="meta">$79.99</p></div>
-      <div class="wish-actions"><div class="stars">★★</div></div>
-    </article>
-  </div>
-</div>
-
-<!-- ================= TECH ================= -->
-<div class="group">
-  <h2>Technology</h2>
-  <div class="items">
-
-    <article class="wish" data-id="applewatch" data-link="https://www.apple.com/shop/buy-watch/apple-watch-se/40mm-gps-midnight-aluminum-anchor-blue-sport-loop-se" data-stars="3" data-category="tech">
-      <div class="wish-main"><h3>Apple Watch SE</h3><p class="meta">Pre-configured</p></div>
-      <div class="wish-actions"><div class="stars">★★★</div></div>
-    </article>
-
-    <article class="wish" data-id="ps5" data-link="https://direct.playstation.com/en-us/buy-consoles/playstation5-digital-edition-console-825-gb" data-stars="4" data-category="tech">
-      <div class="wish-main"><h3>PlayStation 5 Slim</h3><p class="meta">$399</p></div>
-      <div class="wish-actions"><div class="stars">★★★★</div></div>
-    </article>
-
-    <article class="wish" data-id="xm4" data-link="https://electronics.sony.com/audio/headphones/headband/p/wh1000xm4-l" data-stars="3" data-category="tech">
-      <div class="wish-main"><h3>Sony WH-1000XM4</h3><p class="meta">Often on sale</p></div>
-      <div class="wish-actions"><div class="stars">★★★</div></div>
-    </article>
-
-  </div>
-</div>
-
-<!-- ================= VIP ================= -->
-<div class="group vip" id="vipGroup" hidden>
-  <h2>V.I.P. List</h2>
-  <div class="items">
-    <article class="wish" data-id="vip-ps5" data-link="https://direct.playstation.com/en-us/buy-consoles/playstation5-digital-edition-console-825-gb" data-stars="4" data-category="vip">
-      <div class="wish-main"><h3>PlayStation 5</h3></div>
-      <div class="wish-actions"><div class="stars">★★★★</div></div>
-    </article>
-  </div>
-</div>
-
-<footer class="footer-note">
-  &copy; 2025 • Produced by <strong>MindMaster Studios</strong>
-</footer>
+  <!-- Add more .wish cards here -->
 
 </section>
-</main>
 
 <script src="script.js"></script>
 </body>
