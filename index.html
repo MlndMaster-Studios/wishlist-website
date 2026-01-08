@@ -15,26 +15,53 @@
     <option value="1">★</option>
     <option value="2">★★</option>
     <option value="3">★★★</option>
+    <option value="4">★★★★</option>
+    <option value="5">★★★★★</option>
   </select>
 
   <button id="copyLinks">Copy visible links</button>
   <button id="clearPurchased">Clear purchased marks</button>
 </header>
 
-<section id="wishlist">
+<main id="wishlist">
 
-  <!-- Example item -->
-  <div class="wish" data-stars="3" data-link="https://www.amazon.com">
-    <h3>Example Product</h3>
-    <p class="meta">Amazon</p>
-    <div class="wish-actions">
-      <button class="mark-purchased">✓</button>
+  <section class="group" data-group="tech">
+    <h2>Tech</h2>
+
+    <div class="wish" data-stars="5" data-link="https://example.com">
+      <h3>Steam Deck OLED</h3>
+      <p class="meta">Valve</p>
+      <div class="wish-actions">
+        <button class="mark-purchased">✓</button>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- Add more .wish cards here -->
+  <section class="group" data-group="games">
+    <h2>Games</h2>
 
-</section>
+    <div class="wish" data-stars="4" data-link="https://example.com">
+      <h3>Alan Wake 2</h3>
+      <p class="meta">PlayStation</p>
+      <div class="wish-actions">
+        <button class="mark-purchased">✓</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="group" data-group="random">
+    <h2>Random</h2>
+  </section>
+
+  <section class="group" data-group="watches">
+    <h2>Watches</h2>
+  </section>
+
+  <section class="group" data-group="legos">
+    <h2>Legos</h2>
+  </section>
+
+</main>
 
 <script src="script.js"></script>
 </body>
