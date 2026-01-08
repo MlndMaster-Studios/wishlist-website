@@ -1,12 +1,11 @@
 (() => {
-  const items = Array.from(document.querySelectorAll('.wish'));
-
   const search = document.getElementById('search');
   const filterStars = document.getElementById('filterStars');
   const copyLinksBtn = document.getElementById('copyLinks');
   const clearPurchasedBtn = document.getElementById('clearPurchased');
 
-  const STORAGE_KEY = 'wishlist_purchased_v1';
+  const groups = Array.from(document.querySelectorAll('.group'));
+  const STORAGE_KEY = 'wishlist_purchased_v2';
 
   let purchased = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
 
@@ -19,9 +18,8 @@
   }
 
   function refreshPurchased() {
-    items.forEach(el => {
-      const id = getId(el);
-      el.classList.toggle('purchased', !!purchased[id]);
+    document.querySelectorAll('.wish').forEach(el => {
+      el.classList.toggle('purchased', !!purchased[getId(el)]);
     });
   }
 
@@ -29,27 +27,32 @@
     const q = search.value.toLowerCase();
     const star = filterStars.value;
 
-    items.forEach(el => {
-      const matchesText =
-        el.innerText.toLowerCase().includes(q);
+    groups.forEach(group => {
+      const items = Array.from(group.querySelectorAll('.wish'));
+      let visibleCount = 0;
 
-      const matchesStars =
-        star === 'all' || el.dataset.stars === star;
+      items.forEach(el => {
+        const matchesText = el.innerText.toLowerCase().includes(q);
+        const matchesStars =
+          star === 'all' || el.dataset.stars === star;
 
-      el.style.display = matchesText && matchesStars ? '' : 'none';
+        const show = matchesText && matchesStars;
+        el.style.display = show ? '' : 'none';
+        if (show) visibleCount++;
+      });
+
+      group.style.display = visibleCount ? '' : 'none';
     });
   }
 
-  // Card click = open link
-  items.forEach(el => {
+  document.querySelectorAll('.wish').forEach(el => {
     el.addEventListener('click', e => {
       if (e.target.closest('.mark-purchased')) return;
       const link = el.dataset.link;
       if (link) window.open(link, '_blank');
     });
 
-    const btn = el.querySelector('.mark-purchased');
-    btn.addEventListener('click', e => {
+    el.querySelector('.mark-purchased').addEventListener('click', e => {
       e.stopPropagation();
       const id = getId(el);
       purchased[id] = !purchased[id];
@@ -59,9 +62,11 @@
   });
 
   copyLinksBtn.addEventListener('click', async () => {
-    const visible = items.filter(i => i.style.display !== 'none');
+    const visible = Array.from(document.querySelectorAll('.wish'))
+      .filter(el => el.style.display !== 'none');
+
     const text = visible
-      .map(i => `${getId(i)} — ${i.dataset.link || '[no link]'}`)
+      .map(el => `${getId(el)} — ${el.dataset.link || '[no link]'}`)
       .join('\n');
 
     await navigator.clipboard.writeText(text);
