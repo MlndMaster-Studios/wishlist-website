@@ -60,10 +60,23 @@ button:hover {
 }
 
 #wishlist {
+  padding: 12px;
+}
+
+.group {
+  margin-bottom: 26px;
+}
+
+.group h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: var(--accent);
+}
+
+.group-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 12px;
-  padding: 12px;
 }
 
 .wish {
@@ -86,9 +99,9 @@ button:hover {
   font-size: 16px;
 }
 
-.wish .meta {
-  color: var(--muted);
+.meta {
   font-size: 12px;
+  color: var(--muted);
 }
 
 .wish-actions {
